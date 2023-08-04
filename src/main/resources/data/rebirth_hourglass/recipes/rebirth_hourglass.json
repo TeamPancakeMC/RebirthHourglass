@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " E ",
+    "E#E",
+    " E "
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "#":
+      {
+        "item": "minecraft:dragon_egg"
+      }
+  },
+  "result": {
+    "item": "divinityladder:ender_dragon_eyes",
+    "count": 1
+  }
+}
