@@ -1,5 +1,5 @@
 {
-  "item.rebirthhourglass.rebirth_hourglass": "重生沙漏",
-  "itemGroup.rebirthhourglass": "重生沙漏",
-  "tooltip.rebirthhourglass.death_cd": "存储时间: %s h  %s m  %s s"
+  "item.rebirth_hourglass.rebirth_hourglass": "重生沙漏",
+  "itemGroup.rebirth_hourglass": "重生沙漏",
+  "tooltip.rebirth_hourglass.death_cd": "存储时间: %s h  %s m  %s s"
 }

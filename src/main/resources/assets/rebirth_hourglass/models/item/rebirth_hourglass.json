@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rebirthhourglass:item/rebirth_hourglass"
+    "layer0": "rebirth_hourglass:item/rebirth_hourglass"
   }
 }
