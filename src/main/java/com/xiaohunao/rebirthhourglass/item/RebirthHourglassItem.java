@@ -54,7 +54,7 @@ public class RebirthHourglassItem extends Item {
         int minutes = (storedTime % 3600) / 60;
         int seconds = storedTime % 60;
 
-        tooltip.add(Component.translatable("tooltip.rebirthhourglass.death_cd",hours,minutes,seconds));
+        tooltip.add(Component.translatable("tooltip.rebirth_hourglass.death_cd",hours,minutes,seconds));
 
     }
 
