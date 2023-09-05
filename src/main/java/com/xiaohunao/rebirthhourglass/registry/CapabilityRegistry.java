@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public class CapabilityRegistry {
-    public static final Capability<PlayerRebirthCapability> PLAYER_REBIRTH = CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<PlayerRebirthCapability> PLAYER_REBIRTH = CapabilityManager.get(new CapabilityToken<>() {});
 
     @SubscribeEvent
     public static void register(RegisterCapabilitiesEvent event) {

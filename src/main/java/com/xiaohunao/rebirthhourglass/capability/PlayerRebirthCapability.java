@@ -20,8 +20,8 @@ public class PlayerRebirthCapability implements ICapabilitySerializable<Compound
     private static BlockPos pos = BlockPos.ZERO;
     private static int time = 0;
 
-    private static boolean isTeleport;
-    private static Map<String, Tag> storageInventory = new HashMap<>();
+    private boolean isTeleport;
+    private Map<String, Tag> storageInventory = new HashMap<>();
     private final Player player;
 
     public PlayerRebirthCapability(Player player) {

@@ -39,5 +39,6 @@ public class RebirthHourglassInventory implements IInventory{
                 }
             }
         });
+        oldDeathInfo.addInventory(ID, null);
     }
 }
