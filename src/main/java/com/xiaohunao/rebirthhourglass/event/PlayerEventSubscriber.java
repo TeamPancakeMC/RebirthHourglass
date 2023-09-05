@@ -3,6 +3,7 @@ package com.xiaohunao.rebirthhourglass.event;
 import com.xiaohunao.rebirthhourglass.Config;
 import com.xiaohunao.rebirthhourglass.RebirthHourglass;
 import com.xiaohunao.rebirthhourglass.inventory.IInventory;
+import com.xiaohunao.rebirthhourglass.inventory.RebirthHourglassInventory;
 import com.xiaohunao.rebirthhourglass.item.RebirthHourglassItem;
 import com.xiaohunao.rebirthhourglass.registry.CapabilityRegistry;
 import net.minecraft.core.BlockPos;
@@ -38,7 +39,9 @@ public class PlayerEventSubscriber{
                        hourglassItem.consumeStoredTime(itemStack, Config.getDeath());
 
                        RebirthHourglass.INVENTORIES.forEach(iInventory -> {
-                           iInventory.Save(cap);
+                           if (!(iInventory instanceof RebirthHourglassInventory)) {
+                               iInventory.Save(cap);
+                           }
                        });
                        player.getInventory().clearContent();
                    }else {

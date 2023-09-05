@@ -13,13 +13,19 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
 
 import java.util.List;
 
@@ -66,9 +72,12 @@ public class RebirthHourglass {
 
     public static void registerInventory() {
         registerInventory(0,new VanillaInventory());
-        registerInventory(1,new CuriosInventory());
+        if (ModList.get().isLoaded(CuriosApi.MODID)){
+            registerInventory(1,new CuriosInventory());
+        }
         registerInventory(2,new RebirthHourglassInventory());
         registerInventory(3,new EXPInventory());
     }
+
 
 }
