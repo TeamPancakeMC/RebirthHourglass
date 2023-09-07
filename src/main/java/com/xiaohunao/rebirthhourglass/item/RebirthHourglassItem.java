@@ -1,6 +1,7 @@
 package com.xiaohunao.rebirthhourglass.item;
 
 import com.xiaohunao.rebirthhourglass.Config;
+import com.xiaohunao.rebirthhourglass.RebirthHourglass;
 import com.xiaohunao.rebirthhourglass.registry.CapabilityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -18,12 +19,12 @@ import java.util.List;
 public class RebirthHourglassItem extends Item {
     private static final int NODE = 5 * 60 ;
     public RebirthHourglassItem() {
-        super(new Item.Properties());
+        super(new Item.Properties().tab(RebirthHourglass.tab));
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !ItemStack.isSameItem(oldStack, newStack);
+        return !ItemStack.isSame(oldStack, newStack);
     }
 
     @Override
