@@ -17,9 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerRebirthCapability implements ICapabilitySerializable<CompoundTag>, IPlayerRebirthCapability{
-    private static BlockPos pos = BlockPos.ZERO;
-    private static int time = 0;
-
+    private BlockPos pos = BlockPos.ZERO;
+    private int time = 0;
     private boolean isTeleport;
     private Map<String, Tag> storageInventory = new HashMap<>();
     private final Player player;
@@ -45,9 +44,30 @@ public class PlayerRebirthCapability implements ICapabilitySerializable<Compound
     }
 
     @Override
+    public Map<String, Tag> getStorageInventory() {
+        return storageInventory;
+    }
+
+    @Override
+    public void setStorageInventory(Map<String, Tag> storageInventory) {
+        this.storageInventory = storageInventory;
+    }
+
+    @Override
+    public boolean isTeleport() {
+        return isTeleport;
+    }
+
+    @Override
+    public void setTeleport(boolean teleport) {
+        isTeleport = teleport;
+    }
+
+    @Override
     public Player getPlayer() {
         return player;
     }
+
 
     @Override
     public BlockPos getPos() {
@@ -68,17 +88,6 @@ public class PlayerRebirthCapability implements ICapabilitySerializable<Compound
     public void setTime(int time) {
         this.time = time;
     }
-
-    @Override
-    public boolean isIsTeleport() {
-        return this.isTeleport;
-    }
-
-    @Override
-    public void setIsTeleport(boolean isTeleport) {
-        this.isTeleport = isTeleport;
-    }
-
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         return CapabilityRegistry.PLAYER_REBIRTH.orEmpty(cap, LazyOptional.of(() -> this));
@@ -89,7 +98,7 @@ public class PlayerRebirthCapability implements ICapabilitySerializable<Compound
         CompoundTag compoundTag = new CompoundTag();
         compoundTag.put("pos", NbtUtils.writeBlockPos(this.getPos()));
         compoundTag.putInt("time", this.getTime());
-        compoundTag.putBoolean("isTeleport", this.isIsTeleport());
+        compoundTag.putBoolean("isTeleport", this.isTeleport());
         CompoundTag inventory = new CompoundTag();
         for (Map.Entry<String, Tag> entry : this.storageInventory.entrySet()) {
             inventory.put(entry.getKey(), entry.getValue());
@@ -102,7 +111,7 @@ public class PlayerRebirthCapability implements ICapabilitySerializable<Compound
     public void deserializeNBT(CompoundTag nbt) {
         this.setPos(NbtUtils.readBlockPos(nbt.getCompound("pos")));
         this.setTime(nbt.getInt("time"));
-        this.setIsTeleport(nbt.getBoolean("isTeleport"));
+        this.setTeleport(nbt.getBoolean("isTeleport"));
         CompoundTag inventory = nbt.getCompound("inventory");
         for (String key : inventory.getAllKeys()) {
             this.storageInventory.put(key, inventory.get(key));

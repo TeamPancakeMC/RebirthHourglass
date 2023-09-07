@@ -1,7 +1,8 @@
 {
   "pack": {
-    "description": "rebirthhourglass resources",
-    "pack_format": 15,
-    "forge:server_data_pack_format": 12
+    "description": "rebirth_hourglass resources",
+    "pack_format": 9,
+    "forge:resource_pack_format": 8,
+    "forge:data_pack_format": 9
   }
 }

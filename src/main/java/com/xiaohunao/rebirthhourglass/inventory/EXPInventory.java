@@ -6,6 +6,7 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.world.entity.player.Player;
 
 public class EXPInventory implements IInventory{
+    public static final String ID = "exp";
     @Override
     public void Save(IPlayerRebirthCapability deathInfo) {
         Player player = deathInfo.getPlayer();
@@ -13,15 +14,14 @@ public class EXPInventory implements IInventory{
         int totalExperience = player.totalExperience;
 
         IntTag intTag = IntTag.valueOf((int) (totalExperience * Config.getExp()));
-        deathInfo.addInventory("exp", intTag);
+        deathInfo.addInventory(ID, intTag);
     }
 
     @Override
-    public void Load(IPlayerRebirthCapability newDeathInfo, IPlayerRebirthCapability oldDeathInfo) {
-        Player player = newDeathInfo.getPlayer();
-        if (player == null) return;
-        IntTag exp = (IntTag) oldDeathInfo.getInventory("exp");
-        if (exp == null) return;
+    public void Load(IPlayerRebirthCapability deathInfo) {
+        Player player = deathInfo.getPlayer();
+        IntTag exp = (IntTag) deathInfo.getInventory(ID);
+        if (exp == null || player == null) return;
         player.giveExperiencePoints(exp.getAsInt());
     }
 }

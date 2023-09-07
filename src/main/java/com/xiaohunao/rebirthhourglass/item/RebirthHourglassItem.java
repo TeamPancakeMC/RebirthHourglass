@@ -5,6 +5,7 @@ import com.xiaohunao.rebirthhourglass.RebirthHourglass;
 import com.xiaohunao.rebirthhourglass.registry.CapabilityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +15,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-
+@ParametersAreNonnullByDefault
 public class RebirthHourglassItem extends Item {
     private static final int NODE = 5 * 60 ;
     public RebirthHourglassItem() {
@@ -55,7 +57,7 @@ public class RebirthHourglassItem extends Item {
         int minutes = (storedTime % 3600) / 60;
         int seconds = storedTime % 60;
 
-        tooltip.add(Component.translatable("tooltip.rebirth_hourglass.death_cd",hours,minutes,seconds));
+        tooltip.add(new TranslatableComponent("tooltip.rebirth_hourglass.death_cd",hours,minutes,seconds));
 
     }
 
@@ -77,8 +79,8 @@ public class RebirthHourglassItem extends Item {
             if (storedTime > Config.getTeleport() ) {
                 int teleportationCost = this.getTeleportationCost((int) (level.getGameTime() / 20 - cap.getTime()));
                 BlockPos pos = cap.getPos();
-                if(teleportationCost <= storedTime && cap.isIsTeleport()){
-                    cap.setIsTeleport(false);
+                if(teleportationCost <= storedTime && cap.isTeleport()){
+                    cap.setTeleport(false);
                     this.consumeStoredTime(itemInHand, teleportationCost);
                     player.teleportTo(pos.getX(), pos.getY(), pos.getZ());
                 }
