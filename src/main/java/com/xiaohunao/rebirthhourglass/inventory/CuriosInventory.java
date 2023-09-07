@@ -11,30 +11,15 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.util.ICuriosHelper;
 
 public class CuriosInventory implements IInventory{
+    public static final String ID = "curios";
     @Override
     public void Save(IPlayerRebirthCapability deathInfo) {
-        CuriosApi.getPlayerSlots().forEach((s, curioStackHandler) -> {
-            LazyOptional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosHelper().getCuriosHandler(deathInfo.getPlayer());
-            curiosHandler.ifPresent(handler -> {
-                ListTag tags = handler.saveInventory(true);
-                System.out.println("save curios");
-                System.out.println(tags);
-                deathInfo.addInventory("curios", tags);
-            });
-        });
+
     }
 
 
     @Override
-    public void Load(IPlayerRebirthCapability newDeathInfo, IPlayerRebirthCapability oldDeathInfo) {
-        Player player = newDeathInfo.getPlayer();
-        LazyOptional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosHelper().getCuriosHandler(player);
-        curiosHandler.ifPresent(handler -> {
-            ICuriosItemHandler helper = CuriosApi.getCuriosHelper().getCuriosHandler(player).orElse(null);
-            Tag curios = oldDeathInfo.getInventory("curios");
-            System.out.println("load curios");
-            System.out.println(curios);
-            helper.loadInventory((ListTag) curios);
-        });
+    public void Load(IPlayerRebirthCapability deathInfo) {
+
     }
 }
