@@ -16,6 +16,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Objects;
+
 @Mod.EventBusSubscriber
 public class PlayerEventSubscriber{
     @SubscribeEvent
@@ -23,7 +25,7 @@ public class PlayerEventSubscriber{
         LivingEntity entity = event.getEntity();
         if (!(entity instanceof Player player)) return;
 
-        Level level = player.level();
+        Level level = player.level;
         if (level.isClientSide()) return;
 
         BlockPos pos = player.blockPosition();
@@ -35,17 +37,16 @@ public class PlayerEventSubscriber{
                    if(hourglassItem.canUseNoDrop(itemStack)){
                        cap.setTime(gameTime);
                        cap.setPos(pos);
-                       cap.setIsTeleport(true);
+                       cap.setTeleport(true);
                        hourglassItem.consumeStoredTime(itemStack, Config.getDeath());
 
-                       RebirthHourglass.INVENTORIES.forEach(iInventory -> {
-                           if (!(iInventory instanceof RebirthHourglassInventory)) {
-                               iInventory.Save(cap);
-                           }
+                       RebirthHourglass.INVENTORIES.forEach((type,iInventory) -> {
+                           if (Objects.equals(type, RebirthHourglassInventory.ID)) return;
+                           iInventory.Save(cap);
                        });
                        player.getInventory().clearContent();
                    }else {
-                       RebirthHourglass.INVENTORIES.get(2).Save(cap);
+                       RebirthHourglass.INVENTORIES.get(RebirthHourglassInventory.ID).Save(cap);
                        player.getInventory().removeItem(itemStack);
                    }
                });
@@ -59,18 +60,19 @@ public class PlayerEventSubscriber{
     @SubscribeEvent
     public static void playerRespawn(final PlayerEvent.Clone event) {
         Player player = event.getEntity();
-        if (player.level().isClientSide()) return;
+        if (player.level.isClientSide()) return;
         if (event.isWasDeath()){
             Player original = event.getOriginal();
             original.revive();
-            original.getCapability(CapabilityRegistry.PLAYER_REBIRTH).ifPresent(originalCap -> {
-                player.getCapability(CapabilityRegistry.PLAYER_REBIRTH).ifPresent(cap -> {
-                    for (IInventory iInventory : RebirthHourglass.INVENTORIES) {
-                        iInventory.Load(cap, originalCap);
-                    }
-                    cap.clearInventory();
-                });
-            });
+            original.getCapability(CapabilityRegistry.PLAYER_REBIRTH).ifPresent(oldCap
+                    -> player.getCapability(CapabilityRegistry.PLAYER_REBIRTH).ifPresent(newCap -> {
+                newCap.setTime(oldCap.getTime());
+                newCap.setPos(oldCap.getPos());
+                newCap.setTeleport(oldCap.isTeleport());
+                newCap.setStorageInventory(oldCap.getStorageInventory());
+                RebirthHourglass.INVENTORIES.values().forEach(iInventory -> iInventory.Load(newCap));
+                newCap.clearInventory();
+            }));
             original.remove(Entity.RemovalReason.DISCARDED);
         }
     }

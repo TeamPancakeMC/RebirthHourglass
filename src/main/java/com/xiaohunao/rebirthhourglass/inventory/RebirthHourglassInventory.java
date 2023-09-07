@@ -9,27 +9,25 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class RebirthHourglassInventory implements IInventory{
-    private static final String ID = "rebirthhourglass";
+    public static final String ID = "rebirth_hourglass";
     @Override
     public void Save(IPlayerRebirthCapability deathInfo) {
         Player player = deathInfo.getPlayer();
         if (player == null) return;
         player.getInventory().items.forEach(itemStack -> {
-            if (itemStack.getItem() instanceof RebirthHourglassItem hourglassItem) {
+            if (itemStack.getItem() instanceof RebirthHourglassItem) {
                 deathInfo.addInventory(ID, itemStack.save(new CompoundTag()));
             }
         });
     }
 
     @Override
-    public void Load(IPlayerRebirthCapability newDeathInfo, IPlayerRebirthCapability oldDeathInfo) {
-        Player player = newDeathInfo.getPlayer();
-        if (player == null) return;
-        CompoundTag compoundTag = (CompoundTag) oldDeathInfo.getInventory(ID);
-        if (compoundTag == null) return;
+    public void Load(IPlayerRebirthCapability deathInfo) {
+        Player player = deathInfo.getPlayer();
+        CompoundTag compoundTag = (CompoundTag) deathInfo.getInventory(ID);
+        if (compoundTag == null || player == null) return;
         player.getCapability(CapabilityRegistry.PLAYER_REBIRTH).ifPresent(cap ->{
-            Tag vanilla = cap.getInventory("vanilla");
-            if(vanilla == null) {
+            if(cap.getInventory(VanillaInventory.ID) == null) {
                 for (ItemStack itemStack : player.getInventory().items) {
                     if (itemStack.isEmpty()) {
                         ItemStack itemStack1 = ItemStack.of(compoundTag);
@@ -39,6 +37,6 @@ public class RebirthHourglassInventory implements IInventory{
                 }
             }
         });
-        oldDeathInfo.addInventory(ID, null);
+        deathInfo.addInventory(ID, null);
     }
 }
